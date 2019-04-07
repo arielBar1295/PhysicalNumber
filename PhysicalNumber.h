@@ -18,8 +18,8 @@ this->unit=unit;
 this->number=number;
 
 }
-PhysicalNumber operator+(PhysicalNumber &other) const ;
-PhysicalNumber operator-(PhysicalNumber &other) const;
+PhysicalNumber operator+(const PhysicalNumber &other) const ;
+PhysicalNumber operator-(const PhysicalNumber &other) const;
 const PhysicalNumber& operator+=(const PhysicalNumber &other);
 const PhysicalNumber& operator-=(const PhysicalNumber &other);
 PhysicalNumber& operator+();
