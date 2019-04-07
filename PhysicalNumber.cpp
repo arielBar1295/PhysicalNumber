@@ -449,7 +449,6 @@ PhysicalNumber PhysicalNumber::operator--(int){
     return  temp;
 }
  const PhysicalNumber& PhysicalNumber::operator++(){
-//number+=1;
 this->setNumber(number++);
 return *this;
 }
