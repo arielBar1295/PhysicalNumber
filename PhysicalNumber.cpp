@@ -195,7 +195,7 @@ double unitConvert= convertUnit(PhysicalNumber(answer,CM));
    return *this;
     }
     }
-    PhysicalNumber PhysicalNumber::operator-(PhysicalNumber &other) const{
+    PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber &other) const{
     if(same(other)){
         double num= number-other.number;
          return PhysicalNumber(num,other.unit);
@@ -226,7 +226,7 @@ double x=double(number-unitConvert);
    return PhysicalNumber(x,unit);
     }
     }
-     PhysicalNumber PhysicalNumber::operator+(PhysicalNumber &other) const{
+     PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber &other) const{
 
     if(same(other)){
         double num= number+other.number;
