@@ -11,27 +11,27 @@ using namespace ariel;
 const char* units[]={"KM","M","CM","HOUR","MIN","SEC","G","KG","TON"};
 double PhysicalNumber::convertUnit(PhysicalNumber u2) const {
     if(u2.unit<=2){
-        if(unit==M &&u2.getUnit()==CM){
-            return u2.getNumber()/100;
+        if(unit==M){
+            return (double)u2.getNumber()/100;
         }
-        if(unit==KM &&u2.getUnit()==CM){
+        if(unit==KM ){
             return (double)u2.getNumber()/100000;
         }
     }
     if(unit>2 && unit<=5){
       if(unit==HOUR){
-            return u2.getNumber()/3600;
+            (double)return u2.getNumber()/3600;
         }
         if(unit==ariel::Unit::MIN){
-            return u2.getNumber()/60;
+            (double)return u2.getNumber()/60;
         }
     }
     else{
         if(unit==KG){
-          return u2.getNumber()/1000;
+          (double)return u2.getNumber()/1000;
         }
         if(unit==TON){
-           return u2.getNumber()/1000000;
+           (double)return u2.getNumber()/1000000;
         }
     }
     return 0;
@@ -40,11 +40,11 @@ double PhysicalNumber::convertCm(PhysicalNumber u2) const{
     switch (u2.unit)
     {
         case KM:
-         return u2.number*100000;
+         return (double)u2.number*100000;
             break;
         case M:
        
-        return u2.number*100;
+        return (double)u2.number*100;
         
         break;
         default:
@@ -56,11 +56,11 @@ double PhysicalNumber::convertSEC(PhysicalNumber u2) const {
     switch (u2.unit)
     {
         case HOUR:
-         return u2.number*3600;
+         return (double)u2.number*3600;
             break;
         case ariel::Unit::MIN:
        
-        return u2.number*60;
+        return (double)u2.number*60;
         break;
         default:
             break;
@@ -72,12 +72,12 @@ switch (u2.unit)
     {
         case TON:{
             
-         return u2.number*1000000;
+         return (double)u2.number*1000000;
             break;
         }
         case KG:
        
-        return u2.number*1000;
+        return (double)u2.number*1000;
         break;
         default:
             break;
@@ -441,7 +441,11 @@ const PhysicalNumber& PhysicalNumber::operator=(const PhysicalNumber &other){
     }
     return *this;
 }
-  PhysicalNumber& PhysicalNumber::operator--(){
+  PhysicalNumber& PhysicalNumber::operator++(){
+number++;  
+return *this;
+}
+ const PhysicalNumber& PhysicalNumber::operator--(){
 number--;
 
 return *this;
@@ -449,18 +453,15 @@ return *this;
 PhysicalNumber PhysicalNumber::operator++(int){
     PhysicalNumber temp=*this;
     number++;
-   // return  temp;
-   return *this;
+    return  temp;
+   //return *this;
    //change return in order to pass,need to be fixed!
 }
 PhysicalNumber PhysicalNumber::operator--(int){
     PhysicalNumber temp=*this;
     number--;
-    //return  temp;
-    return *this;
+    return  temp;
+    //return *this;
     //change return in order to pass,need to be fixed!
 }
-  PhysicalNumber& PhysicalNumber::operator++(){
-number++;  
-return *this;
-}
+
