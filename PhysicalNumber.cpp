@@ -441,7 +441,7 @@ const PhysicalNumber& PhysicalNumber::operator=(const PhysicalNumber &other){
     }
     return *this;
 }
- const PhysicalNumber& PhysicalNumber::operator--(){
+  PhysicalNumber& PhysicalNumber::operator--(){
 number--;
 
 return *this;
@@ -460,7 +460,7 @@ PhysicalNumber PhysicalNumber::operator--(int){
     return *this;
     //change return in order to pass,need to be fixed!
 }
- const PhysicalNumber& PhysicalNumber::operator++(){
+  PhysicalNumber& PhysicalNumber::operator++(){
 number++;  
 return *this;
 }
