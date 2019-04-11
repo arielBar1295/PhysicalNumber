@@ -20,18 +20,18 @@ double PhysicalNumber::convertUnit(PhysicalNumber u2) const {
     }
     if(unit>2 && unit<=5){
       if(unit==HOUR){
-            (double)return u2.getNumber()/3600;
+          return   (double)u2.getNumber()/3600;
         }
         if(unit==ariel::Unit::MIN){
-            (double)return u2.getNumber()/60;
+          return   (double)u2.getNumber()/60;
         }
     }
     else{
         if(unit==KG){
-          (double)return u2.getNumber()/1000;
+         return  (double)u2.getNumber()/1000;
         }
         if(unit==TON){
-           (double)return u2.getNumber()/1000000;
+          return  (double)u2.getNumber()/1000000;
         }
     }
     return 0;
