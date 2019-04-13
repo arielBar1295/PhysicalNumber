@@ -5,6 +5,7 @@
 #include <sstream>
 #include<bits/stdc++.h>
 #include "PhysicalNumber.h"
+#include<algorithm>
 using namespace std;
 using namespace ariel;
 //global array of the unit.
@@ -20,18 +21,18 @@ double PhysicalNumber::convertUnit(PhysicalNumber u2) const {
     }
     if(unit>2 && unit<=5){
       if(unit==HOUR){
-          return   (double)u2.getNumber()/3600;
+            return (double)u2.getNumber()/3600;
         }
         if(unit==ariel::Unit::MIN){
-          return   (double)u2.getNumber()/60;
+            return (double)u2.getNumber()/60;
         }
     }
     else{
         if(unit==KG){
-         return  (double)u2.getNumber()/1000;
+          return (double)u2.getNumber()/1000;
         }
         if(unit==TON){
-          return  (double)u2.getNumber()/1000000;
+           return (double)u2.getNumber()/1000000;
         }
     }
     return 0;
@@ -273,9 +274,13 @@ os<<other.getNumber()<<"["<<s1<<"]";
 return os;
 }
 std::istream& ariel::operator>>(std::istream& in, PhysicalNumber &other) 
-{
+{     int numEnum=0;
+     int inUnit=0;
  const char* units[]={"KM","M","CM","HOUR","MIN","SEC","G","KG","TON"};
  std::string ret;
+ double n=0;
+ int flag=0;
+ int flag1=0;
     char buffer[4096];
     while (in.read(buffer, sizeof(buffer)))
         ret.append(buffer, sizeof(buffer));
@@ -287,38 +292,75 @@ std::istream& ariel::operator>>(std::istream& in, PhysicalNumber &other)
     char str[n1 + 1]; 
 // copying the contents of the 
     // string to char array 
-    strcpy(str, ret.c_str()); 
-  pch = strtok (str," [.]");
+    strcpy(str, ret.c_str());
+ //std::string s = "hell[o";
+if (ret.find('[') != std::string::npos){
+   flag=1;
+   cout<<"in "<<endl;
+}
+if (ret.find(']') != std::string::npos){
+    flag1=1;
+    cout<<"in2 "<<endl;
+}
+    if(flag==1 && flag1==1){
+        cout<<"in 3"<<endl;
+  pch = strtok (str," [ ]");
+  cout<<"p:"<<pch<<endl;
   istringstream ss( pch );
-   double n;
+   
    //saving the number.
    ss >> n;
   
   //getting the unit.
-  pch = strtok (NULL," [.]");
+  cout<<"p:"<<pch<<endl;
+  pch = strtok (NULL," [ ]");
+   if(pch==NULL){
+in.clear();
+
+   return in; 
+  }
+  cout<<"p:"<<pch<<endl;
+
+ 
    char *str2=pch;
    int len=strlen(str2);
    //to upperCase ,as the presentation in unit.h.
    for(int i=0;i<len;i++){
        str2[i]=str2[i]-32;
    }
-   int inUnit=0;
+  cout<<"hello:"<<str2<<endl;
    int numEnum=0;
+//    if(str2){
+//        in.clear();
+
+//    return in; 
+//    }
    for(int i=0;i<9;i++){
+       cout<<","<<i<<endl;
        if(strcmp(units[i],str2)==0){
        inUnit=1;
        numEnum=i;
        }
+     
    }
-   if(inUnit==0)
-    throw "exeption!";
-    else
-    
-    {  Unit u1=(Unit)numEnum;
+     if(inUnit==1)
+    {  
+        cout<<"in6"<<endl;
+        Unit u1=(Unit)numEnum;
         other.setUnit(u1);
         other.setNumber(n);   
     }
-    return in; 
+    
+    return in;
+    }
+//    if(inUnit==0)
+//     throw "exeption!";
+//     else
+//in=delete;
+//in.dec;
+//os<<in<<endl;
+in.clear();
+   return in; 
 }
 bool PhysicalNumber::operator==(const PhysicalNumber &other)const {
  if(same(other)){
