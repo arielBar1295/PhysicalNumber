@@ -196,7 +196,7 @@ PhysicalNumber& PhysicalNumber::operator++(){
     number++;  
 return *this;
 }
- const PhysicalNumber& PhysicalNumber::operator--(){
+  PhysicalNumber& PhysicalNumber::operator--(){
       number--;
 return *this;
 }
