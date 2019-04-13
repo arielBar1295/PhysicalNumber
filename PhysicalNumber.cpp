@@ -124,114 +124,20 @@ if(unit>2 && unit<=5){
 else{
    answer=other.getNumber();
         if(other.unit!= G){
-            answer=convertG(other);
-            
+            answer=convertG(other);    
         }
 return answer;
 }
-
-//return answer;
 }
-const PhysicalNumber& PhysicalNumber::operator+=(const PhysicalNumber &other) {
-    if(same(other)){
-        number+=other.number;
-        return *this;
+const PhysicalNumber& PhysicalNumber::operator=(const PhysicalNumber &other){
+    
+    if(this!=&other){
+        number=other.number;
+        unit=other.unit;
     }
-     double answer=convertingU(other);
-    if(unit<=2){
-       if(unit==CM){
-      number=double(number+answer);
-          return *this;  
-          }
-double unitConvert= convertUnit(PhysicalNumber(answer,CM));
- number=double(unitConvert+number);
-   return *this;
+    return *this;
 }
- if(unit>2 && unit<=5){
-    if(unit==SEC){
-       number=double(number+answer);
-       return *this;
-   }
-   double unitConvert= convertUnit(PhysicalNumber(answer,SEC));
-   number=double(unitConvert+number);
-   return *this;
-    } 
-    else{
-         if(unit==G){
-       number=number+answer;
-       return *this;
-   }
-   double unitConvert= convertUnit(PhysicalNumber(answer,G));
-   number=double(unitConvert+number);
-   return *this;
-    }
-    }
-    const PhysicalNumber& PhysicalNumber::operator-=(const PhysicalNumber &other) {
-    if(same(other)){
-        number-=other.number;
-        return *this;
-    }
-     double answer=convertingU(other);
-    if(unit<=2){
-       if(unit==CM){
-      number=double(number-answer);
-          return *this;  
-          }
-double unitConvert= convertUnit(PhysicalNumber(answer,CM));
- number=double(number-unitConvert);
-   return *this;
-}
- if(unit>2 && unit<=5){
-    if(unit==SEC){
-       number=double(number-answer);
-       return *this;
-   }
-   double unitConvert= convertUnit(PhysicalNumber(answer,SEC));
-   number=double(number-unitConvert);
-   return *this;
-    } 
-    else{
-         if(unit==G){
-       number=number-answer;
-       return *this;
-   }
-   double unitConvert= convertUnit(PhysicalNumber(answer,G));
-   number=double(number-unitConvert);
-   return *this;
-    }
-    }
-    PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber &other) const{
-    if(same(other)){
-        double num= number-other.number;
-         return PhysicalNumber(num,other.unit);
-    }
-     double answer=convertingU(other);
-    if(unit<=2){
-       if(unit==CM){
-      return PhysicalNumber(double(number-answer),unit);    
-          }
-double unitConvert= convertUnit(PhysicalNumber(answer,CM));
-double x=double(number-unitConvert);
-   return PhysicalNumber(x,unit);
-}
- if(unit>2 && unit<=5){
-    if(unit==SEC){
-      return PhysicalNumber(double(number-answer),unit);    
-      }
-  double unitConvert= convertUnit(PhysicalNumber(answer,SEC));
-   double x=double(number-unitConvert);
-   return PhysicalNumber(x,unit);
-    } 
-    else{
-         if(unit==G){
-          return PhysicalNumber(double(number-answer),unit);  
-   }
-   double unitConvert= convertUnit(PhysicalNumber(answer,G));
-   double x=double(number-unitConvert);
-   return PhysicalNumber(x,unit);
-    }
-    }
-     PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber &other) const{
+PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber &other) const{
     
     if(same(other)){
         double num= number+other.number;
@@ -245,6 +151,7 @@ double x=double(number-unitConvert);
           }
 double unitConvert= convertUnit(PhysicalNumber(answer,CM));
 double x=double(number+unitConvert);
+
    return PhysicalNumber(x,unit);
 }
  if(unit>2 && unit<=5){
@@ -266,21 +173,56 @@ double x=double(number+unitConvert);
    return PhysicalNumber(x,unit);
     }
     }
- std::ostream& ariel::operator<<(std::ostream& os, const PhysicalNumber &other ){  
-//const char* units[]={"KM","M","CM","HOUR","MIN","SEC","G","KG","TON"};
-string s1=units[other.getUnit()];
-transform(s1.begin(), s1.end(), s1.begin(), ::tolower); 
-os<<other.getNumber()<<"["<<s1<<"]";
-return os;
+     PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber &other) const{
+      double n=other.getNumber()*(-1);
+      PhysicalNumber p1(number,unit);
+      PhysicalNumber p2=p1+PhysicalNumber(n,other.getUnit());
+      return p2;
+     }
+const PhysicalNumber& PhysicalNumber::operator-=(const PhysicalNumber &other) {
+     PhysicalNumber p1(number,unit);
+    
+     PhysicalNumber p2=p1-other;
+     number=p2.getNumber();
+     return *this;
+     }
+const PhysicalNumber& PhysicalNumber::operator+=(const PhysicalNumber &other) {
+    PhysicalNumber p1(number,unit);
+     PhysicalNumber p2=p1+other;
+     number=p2.getNumber();
+     return *this;
+     }
+PhysicalNumber& PhysicalNumber::operator++(){
+    number++;  
+return *this;
+}
+ const PhysicalNumber& PhysicalNumber::operator--(){
+      number--;
+return *this;
+}
+PhysicalNumber PhysicalNumber::operator++(int){
+    PhysicalNumber temp=*this;
+    number++;
+    return  temp;
+}
+PhysicalNumber PhysicalNumber::operator--(int){
+    PhysicalNumber temp=*this;
+    number--;
+    return  temp;
+}
+std::ostream& ariel::operator<<(std::ostream& os, const PhysicalNumber &other ){  
+ string s1=units[other.getUnit()];
+ transform(s1.begin(), s1.end(), s1.begin(), ::tolower); 
+ os<<other.getNumber()<<"["<<s1<<"]";
+  return os;
 }
 std::istream& ariel::operator>>(std::istream& in, PhysicalNumber &other) 
-{     int numEnum=0;
+{    int numEnum=0;
      int inUnit=0;
- const char* units[]={"KM","M","CM","HOUR","MIN","SEC","G","KG","TON"};
- std::string ret;
- double n=0;
- int flag=0;
- int flag1=0;
+     std::string ret;
+     double n=0;
+     int flag=0;
+     int flag1=0;
     char buffer[4096];
     while (in.read(buffer, sizeof(buffer)))
         ret.append(buffer, sizeof(buffer));
@@ -293,72 +235,44 @@ std::istream& ariel::operator>>(std::istream& in, PhysicalNumber &other)
 // copying the contents of the 
     // string to char array 
     strcpy(str, ret.c_str());
- //std::string s = "hell[o";
 if (ret.find('[') != std::string::npos){
    flag=1;
-   cout<<"in "<<endl;
 }
 if (ret.find(']') != std::string::npos){
     flag1=1;
-    cout<<"in2 "<<endl;
 }
     if(flag==1 && flag1==1){
-        cout<<"in 3"<<endl;
   pch = strtok (str," [ ]");
-  cout<<"p:"<<pch<<endl;
   istringstream ss( pch );
-   
    //saving the number.
    ss >> n;
-  
   //getting the unit.
-  cout<<"p:"<<pch<<endl;
-  pch = strtok (NULL," [ ]");
+ pch = strtok (NULL," [ ]");
    if(pch==NULL){
-in.clear();
-
-   return in; 
+      in.clear();
+      return in; 
   }
-  cout<<"p:"<<pch<<endl;
-
- 
    char *str2=pch;
    int len=strlen(str2);
    //to upperCase ,as the presentation in unit.h.
    for(int i=0;i<len;i++){
        str2[i]=str2[i]-32;
    }
-  cout<<"hello:"<<str2<<endl;
    int numEnum=0;
-//    if(str2){
-//        in.clear();
-
-//    return in; 
-//    }
    for(int i=0;i<9;i++){
-       cout<<","<<i<<endl;
        if(strcmp(units[i],str2)==0){
        inUnit=1;
        numEnum=i;
        }
-     
    }
      if(inUnit==1)
-    {  
-        cout<<"in6"<<endl;
-        Unit u1=(Unit)numEnum;
+    {   Unit u1=(Unit)numEnum;
         other.setUnit(u1);
         other.setNumber(n);   
     }
-    
     return in;
     }
-//    if(inUnit==0)
-//     throw "exeption!";
-//     else
-//in=delete;
-//in.dec;
-//os<<in<<endl;
+
 in.clear();
    return in; 
 }
@@ -367,10 +281,8 @@ bool PhysicalNumber::operator==(const PhysicalNumber &other)const {
       if(other.number==number){
             return true;
  }
-        
-           return false;
+         return false;
     }
-    //lengh
     if(unit<=2){
         double cmConvert=other.getNumber();
     if(other.unit!=CM){
@@ -411,20 +323,22 @@ bool PhysicalNumber::operator<(const PhysicalNumber &other) const {
  if(same(other)){
       if(number<other.number)
             return true;
+    return false;
     }
-    //lengh
     if(unit<=2){
         double cmConvert=other.getNumber();
     if(other.unit!=CM){
       cmConvert=convertCm(other);
     }
 if(unit==CM){
-  if(number<other.number)
-         return true;  
+  if(number<cmConvert)
+         return true;
+return false;  
 }
 double unitConvert= convertUnit(PhysicalNumber(cmConvert,CM));
    if(number<unitConvert)
          return true;
+    return false;
       }
     if(unit>2 && unit<=5){
          double SECConvert=other.getNumber();
@@ -434,11 +348,13 @@ double unitConvert= convertUnit(PhysicalNumber(cmConvert,CM));
    if(unit==SEC){
        if(number<SECConvert)
          return true;
+    return false;
    }
    double unitConvert= convertUnit(PhysicalNumber(SECConvert,SEC));
   
    if(number<unitConvert)
          return true;
+      return false;   
     }
     else{
         double gmConvert=other.getNumber();
@@ -448,17 +364,18 @@ double unitConvert= convertUnit(PhysicalNumber(cmConvert,CM));
    if(unit==G){
        if(number<gmConvert)
          return true;
+      return false;   
    }
    double unitConvert= convertUnit(PhysicalNumber(gmConvert,G));
    
   if(number<unitConvert)
          return true;
+      return false;   
     }
     return false;
 } 
-bool PhysicalNumber::operator!=(const PhysicalNumber &other) const {
-  
-return !(*this==other);
+bool PhysicalNumber::operator!=(const PhysicalNumber &other) const { 
+  return !(*this==other);
 }
 bool PhysicalNumber::operator>(const PhysicalNumber &other) const {
 if((other!=*this) && !(*this<other)){
@@ -476,34 +393,3 @@ bool PhysicalNumber::operator>=(const PhysicalNumber &other) const {
         return true;
   return false;         
 }
-const PhysicalNumber& PhysicalNumber::operator=(const PhysicalNumber &other){
-    if(this!=&other){
-        number=other.number;
-        unit=other.unit;
-    }
-    return *this;
-}
-  PhysicalNumber& PhysicalNumber::operator++(){
-number++;  
-return *this;
-}
- const PhysicalNumber& PhysicalNumber::operator--(){
-number--;
-
-return *this;
-}
-PhysicalNumber PhysicalNumber::operator++(int){
-    PhysicalNumber temp=*this;
-    number++;
-    return  temp;
-   //return *this;
-   //change return in order to pass,need to be fixed!
-}
-PhysicalNumber PhysicalNumber::operator--(int){
-    PhysicalNumber temp=*this;
-    number--;
-    return  temp;
-    //return *this;
-    //change return in order to pass,need to be fixed!
-}
-
