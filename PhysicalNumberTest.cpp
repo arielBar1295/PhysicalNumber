@@ -59,6 +59,10 @@ int main() {
     // YOUR TESTS - INSERT AS MANY AS YOU WANT
        
       .setname("My Tests")
+      .CHECK_OUTPUT(c+d-d, "2[hour]")
+      .CHECK_OUTPUT(c++, "2[hour]")
+      .CHECK_OUTPUT(c, "3[hour]")
+      .CHECK_OUTPUT(++(++c), "5[hour]")
       .CHECK_OUTPUT(myPhysic2+myPhysic3, "30002[kg]")
       .CHECK_OUTPUT(myPhysic+myPhysic1, "2.3[km]")
       .CHECK_OUTPUT(myPhysic-myPhysic1, "1.7[km]")
